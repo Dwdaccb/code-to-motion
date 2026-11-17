@@ -11,7 +11,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27%3E%3Crect width=%2716%27 height=%2716%27 rx=%273%27 fill=%27%23eda33a%27/%3E%3C/svg%3E">
 <meta name="description" content="Make vertical animated explainer videos with Claude Code on Windows. Editable scene files, two visual styles, a recording engine, 6 bonuses and a license for client work. US$39 one time, 7-day full refund.">
 <!--
-  Framewright Studio - Code to Motion Kit sales page (EN). Single file, no scripts, no trackers.
+  Framewright Studio - Code to Motion Kit sales page (EN). No trackers. One small inline script (bottom) opens the Cakto checkout in a window on this page; without it the links open the checkout normally. 16/11: new first fold, film strip and script-to-screen section (media/loop_*.mp4, q*.jpg, kit_bg.jpg, anton.woff2 made by paginas_16nov/gerar_midia.py).
   Before publishing, change only these:
    1. The checkout link: the button with id="checkout" (price section) points to #buy now; put the real checkout URL in its href.
    2. Andriw Dos Anjos (footer + Terms): the seller's legal name. Do not put a CPF number on a public page; the payment platform shows the seller data it needs at checkout. Run aplicar_dados.py instead of editing by hand.
@@ -126,6 +126,84 @@
     .price { padding: 44px 40px; }
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  /* ===== 16/11: cinematic first fold, film strip, script-to-screen, checkout window ===== */
+  @font-face { font-family: "Anton"; src: url(media/anton.woff2) format("woff2"); font-display: swap; } /* Anton, SIL Open Font License 1.1 */
+  :root { --display: "Anton", "Archivo Narrow", "Arial Narrow", Impact, sans-serif; }
+  h1, h2, h3 { font-weight: 400; letter-spacing: .005em; }
+  h1 { line-height: .98; }
+  html, body { overflow-x: clip; }
+  .hero { position: relative; overflow: hidden; padding: 40px 0 34px; min-height: min(92vh, 900px); display: flex; flex-direction: column; justify-content: center;
+    background: #050608 url(media/kit_bg.jpg) center right / cover no-repeat; }
+  .hero::before { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5,6,8,.94) 0%, rgba(5,6,8,.78) 42%, rgba(5,6,8,.25) 75%, rgba(5,6,8,.55) 100%), linear-gradient(0deg, #07080b 0%, transparent 30%); }
+  .hero .glow { position: absolute; width: 900px; height: 900px; right: -200px; top: -260px; border-radius: 50%; background: radial-gradient(circle, rgba(237,163,58,.28), rgba(237,163,58,0) 62%); filter: blur(10px); animation: breathe 7s ease-in-out infinite; pointer-events: none; }
+  .hero > .wrap { position: relative; }
+  .hero-grid { display: grid; grid-template-columns: 1fr; gap: 34px; align-items: center; }
+  .hero h1 { font-size: clamp(46px, 11vw, 104px); text-shadow: 0 6px 40px rgba(0,0,0,.6); }
+  .hero h1 .a { background: linear-gradient(92deg, #ffd08a, #eda33a 45%, #ff7a3d); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .big-btn { font-size: 22px; padding: 20px 30px 19px; box-shadow: 0 10px 40px rgba(237,163,58,.35), inset 0 -3px 0 rgba(0,0,0,.18); }
+  .phones { position: relative; display: flex; justify-content: center; gap: 18px; padding-bottom: 6px; }
+  .phone { margin: 0; aspect-ratio: 9 / 16; width: min(42vw, 230px); border-radius: 26px; overflow: hidden; background: #000; border: 6px solid #1b1f27;
+    box-shadow: 0 30px 80px rgba(0,0,0,.65), 0 0 0 1px #2d3440, 0 0 60px rgba(237,163,58,.18); }
+  .phone video { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .phones .p1 { transform: rotate(-4deg) translateY(8px); animation: float1 8s ease-in-out infinite; }
+  .phones .p2 { transform: rotate(4deg) translateY(-14px); animation: float2 9s ease-in-out infinite; }
+  .phones .cap { position: absolute; left: 0; right: 0; bottom: -34px; text-align: center; font-size: 12.5px; color: var(--muted); margin: 0; }
+  .hero .chips { margin-top: 56px; }
+  .strip { border-top: 1px solid var(--line); background: #050608; padding: 18px 0 12px; overflow: hidden; }
+  .strip .track { display: flex; gap: 10px; width: max-content; animation: roll 70s linear infinite; }
+  .strip img { display: block; width: 108px; height: 192px; border-radius: 10px; object-fit: cover; border: 1px solid #232830; }
+  .strip-cap { margin: 10px auto 0; text-align: center; }
+  .fromto { display: grid; grid-template-columns: 1fr; gap: 22px; align-items: center; margin-top: 28px; }
+  .code { background: #0b0d12; border: 1px solid #2d3440; border-radius: 16px; padding: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.4); min-width: 0; }
+  .code .file { font: 500 12px var(--mono); letter-spacing: .08em; color: var(--muted); margin: 0 0 6px; }
+  .code .file + pre { margin-top: 0; }
+  .code pre.src { margin: 0 0 16px; background: #07080b; font-size: 12px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .code pre.src i { font-style: normal; color: var(--accent); }
+  .code pre.src b { font-weight: 400; color: var(--hot); }
+  .code code, .small code { font: 400 .92em var(--mono); color: #e6e1d6; }
+  .fromto .arrow { font: 400 54px var(--display); color: var(--accent); text-align: center; transform: rotate(90deg); line-height: 1; }
+  .phone.solo { width: min(70vw, 300px); margin: 0 auto; }
+  .in { opacity: 0; transform: translateY(18px); animation: rise .9s cubic-bezier(.2,.7,.2,1) forwards; animation-delay: var(--d, 0s); }
+  .phones.in { transform: translateY(30px) scale(.97); }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+  @keyframes breathe { 50% { opacity: .65; transform: scale(1.06); } }
+  @keyframes float1 { 50% { transform: rotate(-3deg) translateY(-4px); } }
+  @keyframes float2 { 50% { transform: rotate(3deg) translateY(-26px); } }
+  @keyframes roll { to { transform: translateX(-50%); } }
+  @supports (animation-timeline: view()) {
+    .reveal { animation: rise linear both; animation-timeline: view(); animation-range: entry 0% entry 55%; opacity: 0; transform: translateY(26px); }
+  }
+  .btn { transition: transform .15s ease, background .15s ease; }
+  .btn:hover { transform: translateY(-2px); }
+  @media (min-width: 900px) {
+    .hero { padding: 44px 0 36px; }
+    .hero-grid { grid-template-columns: 1.3fr .7fr; gap: 36px; }
+    .hero h1 { font-size: clamp(56px, 5.6vw, 84px); }
+    .phones .phone { width: 205px; }
+    .phones .p2 { margin-left: -64px; }
+    .phones .cap { bottom: -40px; }
+    .strip img { width: 135px; height: 240px; }
+    .fromto { grid-template-columns: 1.25fr auto .75fr; gap: 30px; }
+    .fromto .arrow { transform: none; }
+    .code pre.src { font-size: 13.5px; white-space: pre; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .in, .reveal, .phones .p1, .phones .p2, .hero .glow, .strip .track { animation: none !important; opacity: 1 !important; }
+    .in, .reveal { transform: none !important; }
+    .strip { overflow-x: auto; }
+  }
+  /* checkout window: the Cakto checkout opens inside this page; the plain link still works without JavaScript */
+  dialog.pay { width: min(560px, 100vw); height: min(92vh, 980px); max-width: 100vw; max-height: 100dvh; padding: 0; border: 1px solid #2d3440; border-radius: 18px; background: #fff; overflow: hidden; box-shadow: 0 40px 120px rgba(0,0,0,.7); }
+  dialog.pay::backdrop { background: rgba(3,4,6,.82); backdrop-filter: blur(6px); }
+  .pay-bar { display: flex; align-items: center; gap: 10px; padding: 10px 12px 10px 16px; background: #0e1015; color: #f2ede3; font: 500 13px var(--body); }
+  .pay-bar strong { font: 400 17px var(--display); letter-spacing: .06em; text-transform: uppercase; }
+  .pay-bar .lock { color: var(--accent); }
+  .pay-bar a { color: var(--muted); margin-left: auto; font-size: 12.5px; }
+  .pay-bar button { background: #232830; color: #fff; border: 0; border-radius: 10px; width: 38px; height: 38px; font: 400 22px/1 var(--body); cursor: pointer; }
+  .pay-bar button:focus-visible { outline: 2px solid var(--accent); }
+  dialog.pay iframe { display: block; width: 100%; height: calc(100% - 58px); border: 0; background: #fff; }
+  @media (max-width: 600px) { dialog.pay { width: 100vw; height: 100dvh; border-radius: 0; border: 0; } }
 </style>
 </head>
 <body>
@@ -141,15 +219,25 @@
 
 <!-- HERO -->
 <section class="hero">
-  <div class="wrap">
-    <p class="tag"><b></b>For Windows &middot; made to work with Claude Code</p>
-    <h1>Make vertical animated explainer videos <span class="a">with Claude Code.</span></h1>
-    <p class="lead" style="margin-top:22px">Write a script. Claude Code builds the scenes. The kit records the finished MP4 (1080&times;1920, 30 fps) with voice, word-by-word captions and sound effects. Two complete example projects are included: open one, change a line, render it again.</p>
-    <div class="row">
-      <a class="btn" href="#buy">Get the kit for US$39</a>
-      <span class="small">One-time payment. Full refund within 7 days. <strong>Required: Claude Pro (US$20/month) is the minimum plan, and it is enough</strong> (Claude Code comes with it; not included in this purchase, sold separately by Anthropic).</span>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="wrap hero-grid">
+    <div class="hero-txt">
+      <p class="tag in" style="--d:0s"><b></b>For Windows &middot; made to work with Claude Code</p>
+      <h1 class="in" style="--d:.08s">Make vertical animated explainer videos <span class="a">with Claude Code.</span></h1>
+      <p class="lead in" style="--d:.18s;margin-top:22px">Write a script. Claude Code builds the scenes. The kit records the finished MP4 (1080&times;1920, 30 fps) with voice, word-by-word captions and sound effects. Two complete example projects are included: open one, change a line, render it again.</p>
+      <div class="row in" style="--d:.28s">
+        <a class="btn big-btn" href="https://pay.cakto.com.br/zvgmznz" data-pay>Get the kit for US$39</a>
+        <span class="small">One-time payment. Full refund within 7 days. <strong>Required: Claude Pro (US$20/month) is the minimum plan, and it is enough</strong> (Claude Code comes with it; not included in this purchase, sold separately by Anthropic).</span>
+      </div>
     </div>
-    <ul class="chips">
+    <div class="phones in" style="--d:.2s">
+      <figure class="phone p1"><video autoplay muted loop playsinline preload="auto" poster="media/loop_elnino.jpg" aria-label="Muted preview: the first seconds of the El Nino example video"><source src="media/loop_elnino.mp4" type="video/mp4"></video></figure>
+      <figure class="phone p2"><video autoplay muted loop playsinline preload="auto" poster="media/loop_zipper.jpg" aria-label="Muted preview: a part of the zipper example video"><source src="media/loop_zipper.mp4" type="video/mp4"></video></figure>
+      <p class="cap">Muted previews of the two example videos in the kit. Full versions with sound <a href="#demo">below</a>.</p>
+    </div>
+  </div>
+  <div class="wrap">
+    <ul class="chips in" style="--d:.36s">
       <li><a href="#demo"><b>See it first:</b> two finished videos, 62 s and 46 s</a></li>
       <li><a href="#guarantee"><b>7-day</b> full refund</a></li>
       <li><a href="#bonus"><b>6 bonuses</b> in the same ZIP</a></li>
@@ -158,11 +246,45 @@
   </div>
 </section>
 
+<!-- FILM STRIP: real frames from the two example videos (list repeated once for a seamless loop) -->
+<div class="strip" role="img" aria-label="Frames from the two example videos made with the kit">
+  <div class="track">
+    <img src="media/q00.jpg" alt="" width="216" height="384"><img src="media/q01.jpg" alt="" width="216" height="384"><img src="media/q02.jpg" alt="" width="216" height="384"><img src="media/q12.jpg" alt="" width="216" height="384"><img src="media/q03.jpg" alt="" width="216" height="384"><img src="media/q04.jpg" alt="" width="216" height="384"><img src="media/q15.jpg" alt="" width="216" height="384"><img src="media/q05.jpg" alt="" width="216" height="384"><img src="media/q06.jpg" alt="" width="216" height="384"><img src="media/q16.jpg" alt="" width="216" height="384"><img src="media/q07.jpg" alt="" width="216" height="384"><img src="media/q08.jpg" alt="" width="216" height="384"><img src="media/q17.jpg" alt="" width="216" height="384"><img src="media/q09.jpg" alt="" width="216" height="384"><img src="media/q10.jpg" alt="" width="216" height="384"><img src="media/q19.jpg" alt="" width="216" height="384"><img src="media/q11.jpg" alt="" width="216" height="384"><img src="media/q13.jpg" alt="" width="216" height="384">
+    <img src="media/q00.jpg" alt="" width="216" height="384"><img src="media/q01.jpg" alt="" width="216" height="384"><img src="media/q02.jpg" alt="" width="216" height="384"><img src="media/q12.jpg" alt="" width="216" height="384"><img src="media/q03.jpg" alt="" width="216" height="384"><img src="media/q04.jpg" alt="" width="216" height="384"><img src="media/q15.jpg" alt="" width="216" height="384"><img src="media/q05.jpg" alt="" width="216" height="384"><img src="media/q06.jpg" alt="" width="216" height="384"><img src="media/q16.jpg" alt="" width="216" height="384"><img src="media/q07.jpg" alt="" width="216" height="384"><img src="media/q08.jpg" alt="" width="216" height="384"><img src="media/q17.jpg" alt="" width="216" height="384"><img src="media/q09.jpg" alt="" width="216" height="384"><img src="media/q10.jpg" alt="" width="216" height="384"><img src="media/q19.jpg" alt="" width="216" height="384"><img src="media/q11.jpg" alt="" width="216" height="384"><img src="media/q13.jpg" alt="" width="216" height="384">
+  </div>
+  <p class="wrap small strip-cap">Every frame above comes from the two example videos, recorded by the kit's engine.</p>
+</div>
+
+<!-- SCRIPT TO SCREEN (before / after). Text copied from projects/el-nino/script.txt and project.js of the kit v1.0 -->
+<section id="from-to">
+  <div class="wrap">
+    <p class="tag reveal"><b></b>Script in, motion out</p>
+    <h2 class="reveal">One sentence of text. <span class="a">Seven seconds of video.</span></h2>
+    <p class="lead reveal">The first sentence of the El Ni&ntilde;o project and its headline lines, exactly as they are in the kit's files, and what the kit recorded from them.</p>
+    <div class="fromto reveal">
+      <div class="code">
+        <p class="file">projects/el-nino/script.txt</p>
+<pre class="src">hook | Imagine you <i>**live^island**</i> // on a Pacific island. //
+       It's been <i>**months^months**</i> // with almost no <i>**rain**</i>. //
+       And the <i>**water^water**</i> // is running out.</pre>
+        <p class="file">projects/el-nino/project.js</p>
+<pre class="src">headlines: [
+  ['s:hook', 'YOU LIVE ON|AN <i>{ISLAND}</i>'],
+  ['months', 'MONTHS|<i>{WITHOUT RAIN}</i>'],
+  ['water',  'THE WATER|<b>{!IS RUNNING OUT}</b>'],</pre>
+        <p class="small" style="margin:12px 0 0">In the script, <code>**word^anchor**</code> marks a word that things are timed to. In the headlines, <code>{word}</code> is orange, <code>{!word}</code> is red and <code>|</code> starts a new line. The timing comes from the voice file.</p>
+      </div>
+      <div class="arrow" aria-hidden="true">&rarr;</div>
+      <figure class="phone solo"><video autoplay muted loop playsinline preload="none" poster="media/loop_elnino.jpg" aria-label="Muted: the first 7 seconds of the El Nino example video"><source src="media/loop_elnino.mp4" type="video/mp4"></video></figure>
+    </div>
+  </div>
+</section>
+
 <!-- DEMO -->
 <section id="demo">
   <div class="wrap">
-    <p class="tag"><b></b>See the result</p>
-    <h2>Proof first. <span class="a">Two finished videos,</span> made with this kit.</h2>
+    <p class="tag reveal"><b></b>See the result</p>
+    <h2 class="reveal">Proof first. <span class="a">Two finished videos,</span> made with this kit.</h2>
     <p class="lead">Press play. Both videos were recorded by the engine in this kit, and each one comes in the ZIP as an editable project: you see how the script, scenes, voice, captions and sound fit together, and you change them.</p>
     <div class="videos">
       <article class="vid">
@@ -185,7 +307,7 @@
     </div>
     <p class="small" style="margin-top:22px">These videos are the finished results of the two included projects, shown here in a lighter web version (the originals are in the ZIP). Your results will depend on your topic, your revisions and your setup. Scenes that are drawings carry an ILLUSTRATION badge; scenes that use real data say so on screen. The kit does not include stock footage or photos.</p>
     <div class="cta-band">
-      <a class="btn" href="#buy">Get the kit for US$39</a>
+      <a class="btn" href="https://pay.cakto.com.br/zvgmznz" data-pay>Get the kit for US$39</a>
       <p class="small">One-time payment. Full refund within 7 days.</p>
     </div>
   </div>
@@ -194,8 +316,8 @@
 <!-- WHAT YOU GET -->
 <section id="inside">
   <div class="wrap">
-    <p class="tag"><b></b>What comes in the kit</p>
-    <h2>Working files <span class="a">you can open and edit.</span></h2>
+    <p class="tag reveal"><b></b>What comes in the kit</p>
+    <h2 class="reveal">Working files <span class="a">you can open and edit.</span></h2>
     <p class="lead">You get a folder you unzip on your PC. Everything in it is plain text you can read, edit or ask Claude Code to change.</p>
     <div class="grid g3">
       <div class="card"><span class="n">STYLE 1</span><h3>Viral 3D</h3><p>Low-poly 3D scenes with a moving camera, a 2-color condensed headline, a caption pill that lights up word by word, a top tag, a badge and a source line.</p></div>
@@ -226,8 +348,8 @@
 <!-- BONUSES -->
 <section id="bonus">
   <div class="wrap">
-    <p class="tag"><b></b>Bonuses</p>
-    <h2>Six bonuses, <span class="h">same ZIP, same price.</span></h2>
+    <p class="tag reveal"><b></b>Bonuses</p>
+    <h2 class="reveal">Six bonuses, <span class="h">same ZIP, same price.</span></h2>
     <p class="lead">Nothing to claim and nothing extra to pay. These are already inside the download.</p>
     <div class="grid g3">
       <div class="card bonus"><span class="n">BONUS 1</span><h3>The mistakes log</h3><p>The zipper project keeps a written log of 16 corrections made while building it (layout, camera, colors, caption timing), each with its fix. You see real problems and real repairs before you make your own.</p></div>
@@ -238,7 +360,7 @@
       <div class="card bonus"><span class="n">BONUS 6</span><h3>Gemini voice script</h3><p>Optional narration with Google's Gemini text-to-speech, using your own key and quota. Or record yourself, or import any WAV you have the rights to.</p></div>
     </div>
     <div class="cta-band">
-      <a class="btn" href="#buy">Get the kit and all 6 bonuses</a>
+      <a class="btn" href="https://pay.cakto.com.br/zvgmznz" data-pay>Get the kit and all 6 bonuses</a>
       <p class="small">US$39, one-time payment. Full refund within 7 days.</p>
     </div>
   </div>
@@ -247,8 +369,8 @@
 <!-- HOW IT WORKS -->
 <section id="how">
   <div class="wrap">
-    <p class="tag"><b></b>How it works</p>
-    <h2>Six stages. <span class="c">One folder</span> per video.</h2>
+    <p class="tag reveal"><b></b>How it works</p>
+    <h2 class="reveal">Six stages. <span class="c">One folder</span> per video.</h2>
     <div class="grid g3">
       <div class="card"><span class="n">1 &middot; SCRIPT</span><p>You and Claude Code write the narration and list the sources.</p></div>
       <div class="card"><span class="n">2 &middot; SCENES</span><p>Claude Code picks scenes and writes the project file.</p></div>
@@ -264,8 +386,8 @@
 <!-- FOR WHOM -->
 <section id="fit">
   <div class="wrap">
-    <p class="tag"><b></b>Is it for you?</p>
-    <h2>Honest <span class="h">limits.</span></h2>
+    <p class="tag reveal"><b></b>Is it for you?</p>
+    <h2 class="reveal">Honest <span class="h">limits.</span></h2>
     <div class="two">
       <div>
         <h3>It fits if you</h3>
@@ -293,8 +415,8 @@
 <!-- REQUIREMENTS -->
 <section id="requirements">
   <div class="wrap">
-    <p class="tag"><b></b>Before you buy</p>
-    <h2>What you <span class="a">need.</span></h2>
+    <p class="tag reveal"><b></b>Before you buy</p>
+    <h2 class="reveal">What you <span class="a">need.</span></h2>
     <table>
       <tr><th>Part</th><th>Details</th></tr>
       <tr><td>Windows</td><td>Windows 11. The kit was built and tested on Windows 11. macOS, Linux, phones and tablets are not supported.</td></tr>
@@ -312,8 +434,8 @@
 <!-- LICENSE -->
 <section id="license">
   <div class="wrap">
-    <p class="tag"><b></b>License, in plain words</p>
-    <h2>Use it for your channel <span class="a">and for your clients.</span></h2>
+    <p class="tag reveal"><b></b>License, in plain words</p>
+    <h2 class="reveal">Use it for your channel <span class="a">and for your clients.</span></h2>
     <p class="lead">The license covers client work and monetized videos. We do not promise income, views or followers: what you get is the tools and the right to use what you make.</p>
     <div class="two">
       <div>
@@ -355,7 +477,7 @@
         <li>Priced in US dollars. Your bank or card issuer may add its own fees or currency conversion</li>
         <li>The download link arrives by email once the payment is approved</li>
       </ul>
-      <a class="btn" id="checkout" href="https://pay.cakto.com.br/zvgmznz">Get the kit for US$39</a>
+      <a class="btn" id="checkout" href="https://pay.cakto.com.br/zvgmznz" data-pay>Get the kit for US$39</a>
       <p class="small" style="margin:14px 0 0">Full refund within 7 days. No reason needed.</p>
     </div>
     <div class="gua" id="guarantee">
@@ -368,15 +490,15 @@
 <!-- FAQ -->
 <section id="faq">
   <div class="wrap">
-    <p class="tag"><b></b>Questions</p>
-    <h2>FAQ</h2>
+    <p class="tag reveal"><b></b>Questions</p>
+    <h2 class="reveal">FAQ</h2>
     <div style="max-width:820px">
       <details><summary>Why use a kit instead of asking Claude Code to animate something from scratch?</summary><p>You can try that, and for a quick test it may be enough. The kit gives you what you would otherwise build and debug yourself: a recorder that draws every picture the same way, two styles and 8 scenes to start from, timing from your voice, a mixer, a doctor that checks your PC, and four projects to copy from. You still need Claude Code and your own review.</p></details>
       <details><summary>Will my videos look like the two above?</summary><p>Those are what the kit produced for two topics, with the styles and scenes you get. Your result depends on your topic, your script, your voice and your revisions. If the look is not what you want, the 7-day refund covers you.</p></details>
       <details><summary>What if it does not run on my PC?</summary><p>Run the doctor command first: it lists what is missing and how to fix it. The troubleshooting guide covers the usual errors, and you can write to us with the error text. If it still does not work for you, ask for the refund within seven days.</p></details>
       <details><summary>How long does a video take to render?</summary><p>The kit records every picture one by one, so a long video takes longer. A 60-second video is 1,800 pictures. In our test (a 16 GB PC with a graphics card), a 3-second clip (90 pictures) took 11 seconds to record. We have no timing for other PCs.</p></details>
       <details><summary>Can I make money with this?</summary><p>We cannot promise that, and we do not. The license lets you publish and monetize the videos you make and make videos for clients. Whether that earns anything depends on your topic, your work and the platform.</p></details>
-      <details><summary>Who takes my payment?</summary><p>Cakto, a payment platform, processes it at checkout, not this page. The price is in US dollars, so your bank or card issuer may convert it or add its own fees.</p></details>
+      <details><summary>Who takes my payment?</summary><p>Cakto, a payment platform, processes it. The checkout opens in a window on this page, but the card details go to Cakto, not to us; you can also open it in a new tab. The price is in US dollars, so your bank or card issuer may convert it or add its own fees.</p></details>
       <details><summary>Do I need to know how to code?</summary><p>No, but you must be comfortable following terminal instructions and editing files. You mostly ask Claude Code to make the changes. Some troubleshooting may need code adjustments.</p></details>
       <details><summary>Is Claude Code included?</summary><p>No. You need your own Claude plan, sold separately by Anthropic. Claude Pro (US$20/month) is the minimum plan with Claude Code and is enough for this kit: the scenes are written by Claude Code and the video is recorded on your PC, so you do not need Max or API credits. Pro has usage limits (every 5 hours and every week, shared with Claude chat); if you reach one, you wait for the reset or upgrade. We make no promise about how many videos fit in your limit. Prices and limits are Anthropic&rsquo;s and can change.</p></details>
       <details><summary>Do I have to use the Gemini voice?</summary><p>No. It is optional and uses your own Google key and quota. You can record yourself or import any WAV file you have the rights to. The kit only needs a file called <code>voice.wav</code>.</p></details>
@@ -397,8 +519,8 @@
 <!-- TERMS, PRIVACY, CONTACT -->
 <section id="terms" class="legal">
   <div class="wrap">
-    <p class="tag"><b></b>Terms</p>
-    <h2>Short <span class="a">terms.</span></h2>
+    <p class="tag reveal"><b></b>Terms</p>
+    <h2 class="reveal">Short <span class="a">terms.</span></h2>
     <h3>What you are buying</h3>
     <p>A single-user license to Code to Motion Kit v1.0, a ZIP file of files and scripts, sold by Framewright Studio (Andriw Dos Anjos). The full license is in the kit as <code>LICENSE.md</code>; the summary is in the license section above.</p>
     <h3>Delivery</h3>
@@ -414,9 +536,9 @@
 
 <section id="privacy" class="legal">
   <div class="wrap">
-    <p class="tag"><b></b>Privacy</p>
-    <h2>Short <span class="a">privacy notice.</span></h2>
-    <p>This page does not use cookies, analytics or trackers. Its web host may keep ordinary server logs (such as visitor IP addresses) under its own privacy policy. The checkout is run by a payment provider, which collects what it needs to take the payment under its own privacy policy.</p>
+    <p class="tag reveal"><b></b>Privacy</p>
+    <h2 class="reveal">Short <span class="a">privacy notice.</span></h2>
+    <p>This page does not use cookies, analytics or trackers. Its web host may keep ordinary server logs (such as visitor IP addresses) under its own privacy policy. The checkout window is run by a payment provider (Cakto), which collects what it needs to take the payment and may use its own cookies, under its own privacy policy. It loads only when you press a buy button.</p>
     <h3>What we receive</h3>
     <ul><li>From the payment provider: your name, email address, the order details and its status.</li><li>From you, if you write to us: your email and what you send in the message.</li></ul>
     <h3>What we use it for</h3>
@@ -428,8 +550,8 @@
 
 <section id="contact">
   <div class="wrap">
-    <p class="tag"><b></b>Contact</p>
-    <h2>Questions <span class="a">before buying?</span></h2>
+    <p class="tag reveal"><b></b>Contact</p>
+    <h2 class="reveal">Questions <span class="a">before buying?</span></h2>
     <p class="lead">Write to <a href="mailto:framewrightstudio4@gmail.com">framewrightstudio4@gmail.com</a>. We answer in English. For help with the kit, include the exact error text and your Windows version.</p>
   </div>
 </section>
@@ -444,6 +566,33 @@
     <p>No promise of views, followers, sales or income. Videos made with the kit are your responsibility: check facts and rights before you publish. &copy; 2026 Framewright Studio.</p>
   </div>
 </footer>
+
+<dialog class="pay" id="pay" aria-label="Secure checkout">
+  <div class="pay-bar">
+    <svg class="lock" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 7V5a4 4 0 1 1 8 0v2h1v8H3V7h1Zm2 0h4V5a2 2 0 1 0-4 0v2Z"/></svg>
+    <strong>Secure checkout</strong>
+    <span class="muted">via Cakto</span>
+    <a id="pay-tab" href="https://pay.cakto.com.br/zvgmznz" target="_blank" rel="noopener">New tab</a>
+    <button type="button" id="pay-x" aria-label="Close checkout">&times;</button>
+  </div>
+  <iframe id="pay-f" title="Checkout" allow="payment *"></iframe>
+</dialog>
+<script>
+/* Opens the checkout inside this page. Without JavaScript, or with Ctrl/Cmd-click, the link opens the checkout page as usual. */
+(function () {
+  var d = document.getElementById('pay'), f = document.getElementById('pay-f'), t = document.getElementById('pay-tab');
+  if (!d || typeof d.showModal !== 'function') return;
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[data-pay]');
+    if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
+    e.preventDefault();
+    f.src = a.href; t.href = a.href;
+    d.showModal(); document.documentElement.style.overflow = 'hidden';
+  });
+  document.getElementById('pay-x').addEventListener('click', function () { d.close(); });
+  d.addEventListener('close', function () { f.src = 'about:blank'; document.documentElement.style.overflow = ''; });
+})();
+</script>
 
 </body>
 </html>
